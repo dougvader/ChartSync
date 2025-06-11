@@ -1,14 +1,37 @@
-using Microsoft.AspNetCore.Components.Web;
+using ChartSync;
+using ChartSync.Services;
+using ChartSync.Shared;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using ChartSync;             // your project’s root namespace
-using ChartSync.Shared;      // so MainLayout is in scope
-
+using System;
+using System.Net.Http;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
-builder.Services.AddSingleton<GenreService>();
 
+// Single HttpClient registration
+builder.Services.AddScoped(sp =>
+    new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+// Register services
+builder.Services.AddScoped<ChartService>();
+builder.Services.AddScoped<GenreService>();
+builder.Services.AddScoped<AuthService>();
 
-await builder.Build().RunAsync();
+var host = builder.Build();
+
+try
+{
+    // 1. Load charts file
+    var chartSvc = host.Services.GetRequiredService<ChartService>();
+    await chartSvc.LoadChartsAsync();
+
+    // 2. Build genres from those charts
+    var genreSvc = host.Services.GetRequiredService<GenreService>();
+    genreSvc.BuildGenres(chartSvc.AllCharts);
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"[Startup Error] {ex.Message}\n{ex.StackTrace}");
+}
+
+await host.RunAsync();
