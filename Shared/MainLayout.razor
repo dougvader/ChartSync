@@ -1,0 +1,90 @@
+@inherits LayoutComponentBase
+@inject GenreService GenreService
+@inject NavigationManager NavigationManager
+@inject AuthService AuthService
+
+<div class="flex h-screen bg-brand-dark text-gray-200">
+    <!-- Left Sidebar -->
+    <aside class="w-64 bg-black flex flex-col">
+        <div class="p-4 font-bold text-xl text-brand">ChartSync</div>
+
+        <!-- Top-Level Store Icons (e.g. Beatport) -->
+        <div class="flex flex-col space-y-2 p-4">
+            <button @onclick="ToggleBeatportGenres" class="flex items-center gap-2 p-2 rounded bg-brand hover:bg-brand/80">
+                <img src="/icons/beatport.svg" alt="Beatport" class="w-5 h-5" />
+                <span>Beatport</span>
+            </button>
+        </div>
+
+        <!-- Nested Genre List (only visible when expanded) -->
+        @if (ShowBeatportGenres)
+        {
+            <ul class="p-4 space-y-2 overflow-y-auto flex-1">
+                @foreach (var genre in GenreService.Genres)
+                {
+                    <li>
+                        <button @onclick="() => HandleGenreClick(genre)"
+                                class=$"block w-full text-left px-2 py-1 rounded hover:bg-gray-700"
+                                style=$"background-color: {genre.Color};">
+                            @genre.Name
+                        </button>
+                    </li>
+                }
+            </ul>
+        }
+    </aside>
+
+    <!-- Main content wrapper -->
+    <div class="flex flex-col flex-1">
+        <!-- Top Navigation -->
+        <nav class="bg-black p-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-brand">ChartSync</div>
+            <ul class="flex space-x-4">
+                <li><NavLink href="/">Home</NavLink></li>
+                <li><NavLink href="/dashboard">Dashboard</NavLink></li>
+                <li><NavLink href="/membership">Membership</NavLink></li>
+                <li><NavLink href="/account">Account</NavLink></li>
+                <li><NavLink href="/about">About Us</NavLink></li>
+                <li><NavLink href="/contact">Contact</NavLink></li>
+                <li><NavLink href="/privacy">Privacy</NavLink></li>
+            </ul>
+        </nav>
+
+        <!-- Page Body -->
+        <div class="p-4 flex-1 overflow-auto">
+            @Body
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool ShowBeatportGenres;
+
+    private void ToggleBeatportGenres()
+    {
+        ShowBeatportGenres = !ShowBeatportGenres;
+    }
+
+    private void HandleGenreClick(Genre genre)
+    {
+        if (!AuthService.IsLoggedIn)
+        {
+            NavigationManager.NavigateTo("/signin");
+        }
+        else
+        {
+            GenreService.SetSelectedGenre(genre);
+            NavigationManager.NavigateTo($"/genres/{genre.Slug}");
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        GenreService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        GenreService.OnChange -= StateHasChanged;
+    }
+}

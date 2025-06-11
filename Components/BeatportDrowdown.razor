@@ -1,0 +1,15 @@
+﻿@inject GenreService GenreService
+
+<select @onchange="OnChartSelected">
+    <option value="">Select a chart</option>
+    <option value="house">House Charts</option>
+    <!-- etc -->
+</select>
+
+@code {
+    void OnChartSelected(ChangeEventArgs e)
+    {
+        var chart = e.Value?.ToString() ?? "";
+        GenreService.SetSelectedChart(chart);
+    }
+}
