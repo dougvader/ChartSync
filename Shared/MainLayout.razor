@@ -1,5 +1,4 @@
 @using ChartSync.Services
-@using ChartSync.Shared
 @inject ChartService ChartService
 @inject GenreService GenreService
 @inject AuthService AuthService
@@ -7,74 +6,87 @@
 @implements IDisposable
 @inherits LayoutComponentBase
 
-<div class="flex h-screen bg-brand-dark text-gray-200">
-  <!-- Sidebar -->
-  <aside class="w-64 bg-black flex flex-col">
-    <div class="p-4 font-bold text-xl text-brand">ChartSync</div>
+<!-- Navbar at the top -->
+<nav class="bg-black p-4 flex justify-between items-center w-full">
+    <div class="text-2xl font-bold text-brand">ChartSync</div>
+    <ul class="flex space-x-4">
+        <li><NavLink href="/">Home</NavLink></li>
+        <li><NavLink href="/dashboard">Dashboard</NavLink></li>
+        <li><NavLink href="/membership">Membership</NavLink></li>
+        <li><NavLink href="/account">Account</NavLink></li>
+        <li><NavLink href="/about">About Us</NavLink></li>
+        <li><NavLink href="/contact">Contact</NavLink></li>
+        <li><NavLink href="/privacy">Privacy</NavLink></li>
+    </ul>
+</nav>
 
-    <!-- Always show the dropdown -->
-    <BeatportDropdown />
-
-    <!-- Only show genres *after* a chart is selected -->
-    @if (!string.IsNullOrEmpty(ChartService.SelectedChart))
-    {
-      <ul class="p-4 flex-1 overflow-y-auto space-y-2">
-        @foreach (var genre in GenreService.Genres)
+<!-- Sidebar and main content below navbar -->
+<div class="flex h-[calc(100vh-64px)] bg-brand-dark text-gray-200">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-black flex flex-col h-full">
+        <div class="p-4 font-bold text-xl text-brand">ChartSync</div>
+        <button class="p-4 text-left font-semibold hover:bg-gray-800 transition w-full" @onclick="ToggleGenres">
+            Beatport
+        </button>
+        @if (showGenres && GenreService.Genres.Any())
         {
-          <li>
-            <button @onclick="() => OnGenreClick(genre)"
-                    class="w-full text-left px-2 py-1 rounded hover:bg-gray-700"
-                    style="background-color: @genre.Color">
-              @genre.Name
-            </button>
-          </li>
+            <div class="flex-1 overflow-y-auto">
+                <ul class="p-4 space-y-2">
+                    @foreach (var genre in GenreService.Genres)
+                    {
+                        <li>
+                            <button @onclick="() => OnGenreClick(genre)"
+                                    class="w-full text-left px-2 py-1 rounded hover:bg-gray-700"
+                                    style="background-color: @genre.Color">
+                                @genre.Name
+                            </button>
+                        </li>
+                    }
+                </ul>
+            </div>
         }
-      </ul>
-    }
-  </aside>
+        else
+        {
+            <div class="flex-1"></div>
+        }
+    </aside>
 
-  <!-- Main content -->
-  <div class="flex-1 flex flex-col">
-        <nav class="bg-black p-4 flex justify-between items-center">
-            <div class="text-2xl font-bold text-brand">ChartSync</div>
-            <ul class="flex space-x-4">
-                <li><NavLink href="/">Home</NavLink></li>
-                <li><NavLink href="/dashboard">Dashboard</NavLink></li>
-                <li><NavLink href="/membership">Membership</NavLink></li>
-                <li><NavLink href="/account">Account</NavLink></li>
-                <li><NavLink href="/about">About Us</NavLink></li>
-                <li><NavLink href="/contact">Contact</NavLink></li>
-                <li><NavLink href="/privacy">Privacy</NavLink></li>
-            </ul>
-        </nav>
-    <div class="p-4 flex-1 overflow-auto">
-      @Body
-    </div>
-  </div>
+    <!-- Main content -->
+    <main class="flex-1 flex flex-col min-w-0">
+        <div class="p-4 flex-1 overflow-auto min-w-0">
+            @Body
+        </div>
+    </main>
 </div>
 
 @code {
-  private void OnGenreClick(Genre g)
-  {
-    if (!AuthService.IsLoggedIn)
-    {
-      NavigationManager.NavigateTo("/signin");
-    }
-    else
-    {
-      GenreService.SetSelectedGenre(g);
-      NavigationManager.NavigateTo($"/genres/{g.Slug}");
-    }
-  }
+    private bool showGenres = false;
 
-  protected override void OnInitialized()
-  {
-    ChartService.OnChange += StateHasChanged;
-  }
+    private void ToggleGenres()
+    {
+        showGenres = !showGenres;
+    }
 
-  public void Dispose()
-  {
-    ChartService.OnChange -= StateHasChanged;
-  }
+    private void OnGenreClick(Genre g)
+    {
+        if (!AuthService.IsLoggedIn)
+        {
+            NavigationManager.NavigateTo("/signin");
+        }
+        else
+        {
+            GenreService.SetSelectedGenre(g);
+            NavigationManager.NavigateTo($"/genres/{g.Slug}");
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        ChartService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        ChartService.OnChange -= StateHasChanged;
+    }
 }
-

@@ -18,12 +18,20 @@ namespace ChartSync.Services
 
         public async Task LoadChartsAsync()
         {
-            var raw = await _http.GetStringAsync("data/BP_genres_fancy.txt");
-            AllCharts = raw
-                .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(line => line.Trim().Trim('"'))
-                .Distinct()
-                .ToList();
+            try
+            {
+                var raw = await _http.GetStringAsync("data/BP_genres_fancy.txt");
+                AllCharts = raw
+                    .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(line => line.Trim().Trim('"'))
+                    .Distinct()
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ChartService.LoadChartsAsync] Error: {ex.Message}\n{ex.StackTrace}");
+                AllCharts = new List<string>(); // fallback to empty list
+            }
         }
 
         // Called by your dropdown

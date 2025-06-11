@@ -11,27 +11,35 @@ namespace ChartSync.Services
 
         public void BuildGenres(IEnumerable<string> allCharts)
         {
-            // Take text before “Beatport” as genre name
-            var list = allCharts
-                .Select(name => {
-                    var parts = name.Split("Beatport")[0].Trim();
-                    return new Genre
-                    {
-                        Name = parts,
-                        Slug = parts.ToLowerInvariant().Replace(" ", "-")
-                    };
-                })
-                .GroupBy(g => g.Slug)
-                .Select(g => g.First())
-                .ToList();
+            try
+            {
+                // Take text before “Beatport” as genre name
+                var list = allCharts
+                    .Select(name => {
+                        var parts = name.Split("Beatport")[0].Trim();
+                        return new Genre
+                        {
+                            Name = parts,
+                            Slug = parts.ToLowerInvariant().Replace(" ", "-")
+                        };
+                    })
+                    .GroupBy(g => g.Slug)
+                    .Select(g => g.First())
+                    .ToList();
 
-            // Assign rotating colors
-            var palette = new[] { "#19cb98", "#1da1f2", "#ffb429", "#e11d48", "#7c3aed" };
-            for (int i = 0; i < list.Count; i++)
-                list[i].Color = palette[i % palette.Length];
+                // Assign rotating colors
+                var palette = new[] { "#19cb98", "#1da1f2", "#ffb429", "#e11d48", "#7c3aed" };
+                for (int i = 0; i < list.Count; i++)
+                    list[i].Color = palette[i % palette.Length];
 
-            Genres = list;
-            OnChange?.Invoke();
+                Genres = list;
+                OnChange?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[GenreService.BuildGenres] Error: {ex.Message}\n{ex.StackTrace}");
+                Genres = new List<Genre>(); // fallback to empty list
+            }
         }
 
         public Genre? SelectedGenre { get; private set; }
