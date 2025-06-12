@@ -1,1 +1,2 @@
-﻿NotsurewhatsgoingonherebutIthinkthisisjustatest
+﻿- removed Vercel Build Command
+- added Vercel Output Directory
