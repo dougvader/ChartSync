@@ -4,16 +4,13 @@
 	 <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Copyright>Douglas Anthony Quinn Brennan</Copyright>
+    <Copyright>ChartSync</Copyright>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Core" Version="1.46.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.4" PrivateAssets="all" />
     <PackageReference Include="System.Net.Http.Json" Version="8.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="wwwroot\data\ChartSync.txt" />
   </ItemGroup>
   <Target Name="TailwindBuild" BeforeTargets="Build">
     <Exec Command="npm install" />
