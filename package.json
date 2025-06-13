@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "ChartSync Blazor WebAssembly + Tailwind CSS",
   "scripts": {
-    "build:css": "tailwindcss -i ./Styles/tailwind.css -o ./wwwroot/css/app.css --watch"
+    "build:css": "tailwindcss -i ./Styles/tailwind.css -o ./wwwroot/css/app.css --minify"
   },
   "keywords": [
     "blazor",

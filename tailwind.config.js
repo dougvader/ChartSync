@@ -1,5 +1,10 @@
 module.exports = {
-  content: ["./**/*.razor", "./**/*.html", "./**/*.cshtml"],
+  content: [
+    "./Pages/**/*.razor",
+    "./Shared/**/*.razor",
+    "./wwwroot/**/*.html",
+    "./wwwroot/**/*.cshtml"
+  ],
   theme: {
     extend: {
       colors: {
@@ -7,5 +12,9 @@ module.exports = {
       }
     }
   },
-  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography'), require('@tailwindcss/aspect-ratio')],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/aspect-ratio')
+  ],
 };
