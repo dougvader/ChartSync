@@ -4,6 +4,7 @@
 	 <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Copyright>Douglas Anthony Quinn Brennan</Copyright>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Core" Version="1.46.2" />
@@ -12,7 +13,7 @@
     <PackageReference Include="System.Net.Http.Json" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\data\BP_genres_fancy.txt" />
+    <None Include="wwwroot\data\ChartSync.txt" />
   </ItemGroup>
   <Target Name="TailwindBuild" BeforeTargets="Build">
     <Exec Command="npm install" />
