@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "ChartSync",
   "resources": {
-    "hash": "sha256-XJpW+ne9r/yWAyOiV8cJMo+4kRgeu9tbI4kBtbndFiE=",
+    "hash": "sha256-6zzVk8ykki0ssPE9EYEvVYxh/oDEZSw7wtLsmWZlGks=",
     "jsModuleNative": {
       "dotnet.native.js": "sha256-YyxJV6dv935qHoQAmjB+2qRjHeGpm4SyWxE0T/KvsIE="
     },
@@ -209,10 +209,10 @@
       "mscorlib.wasm": "sha256-flmBXVpp8uDpWBNEJuRkqo3Qnir1KADo5a1rCQISkPs=",
       "netstandard.wasm": "sha256-iuCVrIBmiGbXpNVvYkBmSt16BNEjbbD82vYrtHimftc=",
       "System.Private.CoreLib.wasm": "sha256-1Xa/xaUoA/iRxpDqZPUUzL8QaTawkoJLhGmxtRv9ZJI=",
-      "ChartSync.wasm": "sha256-b7tXhllh0TN5Ucpq0QmjRFiEZe3ExcMXEv8bOAfNnuE="
+      "ChartSync.wasm": "sha256-VDlY/yGU0HMcUESrUxP+vR2fV0hXanex8+u+n3BMt1o="
     },
     "pdb": {
-      "ChartSync.pdb": "sha256-zXk+8PaMrz530icdAn2lZHkPfAvbdDnlBwKXaI3YB7s="
+      "ChartSync.pdb": "sha256-9y3OV1b5IbvNKoE+QvUiN1Fk01A7rzg/Il09vYpab7I="
     }
   },
   "cacheBootResources": true,
