@@ -1,2 +1,3 @@
 ﻿- removed Vercel Build Command
 - added Vercel Output Directory
+- added files and copied vercel-build.sh to root
